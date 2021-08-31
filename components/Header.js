@@ -55,11 +55,11 @@ function Header() {
          </div>
            
          {/*middle-searchbar */}
-           <div className="flex items-center border-2 rounded-full py-2 md:shadow-sm">
+           <div className="flex items-center md:border-2 rounded-full py-2 md:shadow-sm">
             <input 
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="flex-grow text-sm text-grey-600 placeholder-gray-400 pl-5 bg-transparent outline-none" type="text" placeholder="Start your search" />
+            className="flex-grow text-sm text-grey-600 placeholder-gray-400 pl-5 bg-transparent outline-none"  placeholder="Start your search" />
             <SearchIcon  className="hidden md:inline-flex h-8 bg-red-400 text-white rounded-full p-2 cursor-pointer md:mx-2" />
            </div>
          {/*right */}

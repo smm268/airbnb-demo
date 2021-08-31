@@ -3,6 +3,13 @@ import Footer from "../components/Footer";
 import { useRouter } from "next/dist/client/router";
 import { format } from "date-fns";
 import InfoCard from "../components/InfoCard";
+import dynamic from "next/dynamic";
+
+// Client Side Render as we need Global Window Object
+const Map = dynamic(() => import("../components/Map"), {
+    loading: () => "Loading...",
+    ssr: false,
+  });
 
 function Search({searchResults}) {
    const router = useRouter();
@@ -16,10 +23,11 @@ function Search({searchResults}) {
 
     return (
         <div className="h-screen">
-            <Header />
+            <Header  placeholder={`${location} | ${range} | ${noOfGuests} guests`}
+             />
             <main className="flex">
              <section  className="flex-grow pt-14 px-6">
-                 <p classsName="text-xs">300+ Stays for {noOfGuests} guests</p>
+                 <p className="text-xs">300+ Stays for {noOfGuests} guests</p>
 
                  <h1 className="text-3xl font-semibold mt-2 mb-6">Stays in {location}</h1>
                  <div className="hidden lg:inline-flex space-x-3 text-gray-800 whitespace-nowrap mb-5">
@@ -30,7 +38,7 @@ function Search({searchResults}) {
                      <p className="button">More filters</p>
 
                  </div>
-                 <div clasName="flex flex-col">
+                 <div className="flex flex-col">
                  {searchResults.map(
                      ({img,price,total,star,description,location}) => (
                      <InfoCard 
@@ -47,6 +55,10 @@ function Search({searchResults}) {
                  </div>
                  
              </section>
+           
+            <section className="hidden xl:inline-flex xl:min-w-[600px]">
+                <Map searchResults= {searchResults}  />
+            </section>
             </main>
             <Footer />
         </div>
@@ -56,11 +68,14 @@ function Search({searchResults}) {
 export default Search;
 
 export async function getServerSideProps() {
-    const searchResults = await fetch ("http://links.papareact.com/isz").then(res => res.json());
+    const searchResults = await fetch ("http://links.papareact.com/isz")
+    .then(
+        (res) => res.json()
+        );
 
     return{
         props: {
             searchResults,
-        }
-    }
+        },
+    };
 }
